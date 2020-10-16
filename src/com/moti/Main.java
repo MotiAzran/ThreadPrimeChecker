@@ -1,14 +1,25 @@
+/*
+ * Moti Azran
+ */
 package com.moti;
 
-import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Main class of the program
+ */
 public class Main {
-
+    /**
+     * program entry point
+     * print all the prime number
+     * until some number
+     * @param args command line arguments
+     *             seriesMaxNumber - The number to stop prime check at
+     *             numberOfThreads - Max number of threads to run in parallel
+     */
     public static void main(String[] args) {
-
         final int SERIES_MAX_NUMBER_INDEX = 0;
         final int MAX_NUM_OF_THREAD_INDEX = 1;
         final int ARGS_COUNT = 2;
@@ -23,29 +34,38 @@ public class Main {
             return;
         }
 
-        int series_max = Integer.parseInt(args[SERIES_MAX_NUMBER_INDEX]);
-        int max_num_of_threads = Integer.parseInt(args[MAX_NUM_OF_THREAD_INDEX]);
+        int seriesMax = Integer.parseInt(args[SERIES_MAX_NUMBER_INDEX]);
+        int maxNumOfThreads = Integer.parseInt(args[MAX_NUM_OF_THREAD_INDEX]);
 
-        print_prime_series(series_max, max_num_of_threads);
+        printPrimeSeries(seriesMax, maxNumOfThreads);
     }
 
-    public static void print_prime_series(int series_max, int max_num_of_threads) {
-        PrimeListMonitor prime_list = new PrimeListMonitor(series_max);
-        ExecutorService thread_pool = Executors.newFixedThreadPool(max_num_of_threads);
+    /**
+     * Print all primes until series max
+     * @param seriesMax the max number to check
+     * @param maxNumOfThreads max number of threads to run in parallel
+     */
+    public static void printPrimeSeries(int seriesMax, int maxNumOfThreads) {
+        PrimeListMonitor primeList = new PrimeListMonitor(seriesMax);
+        ExecutorService threadPool = Executors.newFixedThreadPool(maxNumOfThreads);
 
         System.out.println("Checking...");
-        for (int i = 1; i <= series_max; ++i) {
-            thread_pool.execute(new PrimeCheck(i, prime_list));
+        // Run prime check threads
+        for (int i = 1; i <= seriesMax; ++i) {
+            threadPool.execute(new PrimeCheck(i, primeList));
         }
 
-        thread_pool.shutdown();
+        // Close thread pool
+        threadPool.shutdown();
 
         try {
-            thread_pool.awaitTermination(1, TimeUnit.DAYS);
+            // Wait for all threads to finish their work
+            threadPool.awaitTermination(1, TimeUnit.DAYS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        prime_list.print_primes();
+        // Print all primes
+        primeList.printPrimes();
     }
 }
