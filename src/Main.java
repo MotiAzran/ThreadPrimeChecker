@@ -27,14 +27,18 @@ public class Main {
             System.out.println("Error: Invalid parameters");
             System.out.println("usage: PrimeChecker <MaxSeriesNumber> <NumOfThreads>");
             return;
-        } else if (!args[SERIES_MAX_NUMBER_INDEX].chars().allMatch(Character::isDigit) ||
-                   !args[SERIES_MAX_NUMBER_INDEX].chars().allMatch(Character::isDigit)) {
-            System.out.println("Error: parameters should be integers");
-            return;
         }
 
-        int seriesMax = Integer.parseInt(args[SERIES_MAX_NUMBER_INDEX]);
-        int maxNumOfThreads = Integer.parseInt(args[MAX_NUM_OF_THREAD_INDEX]);
+        int seriesMax = 0;
+	    int maxNumOfThreads = 0;
+
+        try {
+	        seriesMax = Integer.parseInt(args[SERIES_MAX_NUMBER_INDEX]);
+	        maxNumOfThreads = Integer.parseInt(args[MAX_NUM_OF_THREAD_INDEX]);
+    	} catch(NumberFormatException e) {
+    		System.out.println("Error: parameters should be integers");
+            return;
+    	}
 
         printPrimeSeries(seriesMax, maxNumOfThreads);
     }
