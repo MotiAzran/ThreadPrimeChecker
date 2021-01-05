@@ -1,7 +1,6 @@
 /*
  * Moti Azran
  */
-package com.moti;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
@@ -48,13 +47,13 @@ public class Main {
     public static void printPrimeSeries(int seriesMax, int maxNumOfThreads) {
         final int THREADS_TIMEOUT_MIN = 5;
 
-        PrimeListMonitor primeList = new PrimeListMonitor(seriesMax);
+        PrimeListMonitor primeList = new PrimeListMonitor();
         ExecutorService threadPool = Executors.newFixedThreadPool(maxNumOfThreads);
 
         System.out.println("Checking...");
         // Run prime check threads
-        for (int i = 1; i <= seriesMax; ++i) {
-            threadPool.execute(new PrimeCheck(i, primeList));
+        for (int i = 0; i < seriesMax; ++i) {
+            threadPool.execute(new PrimeCheck(primeList));
         }
 
         // Close thread pool
