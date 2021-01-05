@@ -46,6 +46,8 @@ public class Main {
      * @param maxNumOfThreads max number of threads to run in parallel
      */
     public static void printPrimeSeries(int seriesMax, int maxNumOfThreads) {
+        final int THREADS_TIMEOUT_MIN = 5;
+
         PrimeListMonitor primeList = new PrimeListMonitor(seriesMax);
         ExecutorService threadPool = Executors.newFixedThreadPool(maxNumOfThreads);
 
@@ -60,7 +62,7 @@ public class Main {
 
         try {
             // Wait for all threads to finish their work
-            threadPool.awaitTermination(1, TimeUnit.DAYS);
+            threadPool.awaitTermination(THREADS_TIMEOUT_MIN, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
